@@ -4,7 +4,7 @@ name: Docker CI Pipeline
 on:
   push:
     branches:
-      - main # هيشتغل بس لما نرفع على الفرع الرئيسي
+      - master # هيشتغل بس لما نرفع على الفرع الرئيسي
 
 jobs:
   build-and-test-image:
