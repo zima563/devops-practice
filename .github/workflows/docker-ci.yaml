@@ -1,24 +1,25 @@
 name: Docker CI Pipeline
 
-# الـ Pipeline ده هيشتغل إمتى؟
 on:
   push:
     branches:
-      - master # هيشتغل بس لما نرفع على الفرع الرئيسي
+      - main
+      - master
+  workflow_dispatch: # السطر السحري اللي بيعمل زرار التشغيل اليدوي
 
 jobs:
   build-and-test-image:
-    runs-on: ubuntu-latest # سيرفر مؤقت من جيت هاب
+    runs-on: ubuntu-latest
 
     steps:
-      - name: 1. Checkout the code (سحب الكود)
+      - name: 1. Checkout the code
         uses: actions/checkout@v3
 
-      - name: 2. Build the Docker Image (بناء الحاوية للتأكد من سلامة الكود)
+      - name: 2. Build the Docker Image
         run: docker build -t my-app-test .
 
-      - name: 3. Run the container temporarily (تشغيل الحاوية للتجربة)
+      - name: 3. Run the container temporarily
         run: docker run -d -p 3000:3000 --name test-container my-app-test
 
-      - name: 4. Check if the app is responding (التأكد إن الموقع شغال)
+      - name: 4. Check if the app is responding
         run: sleep 5 && curl http://localhost:3000
