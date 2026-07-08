@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  my-app:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/app
+      - /app/node_modules # السطر ده عشان مانمسحش مكتبات النود اللي جوه الحاوية
+    depends_on:
+      - cache
+
+  cache:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
