@@ -1,0 +1,24 @@
+name: Docker CI Pipeline
+
+# الـ Pipeline ده هيشتغل إمتى؟
+on:
+  push:
+    branches:
+      - main # هيشتغل بس لما نرفع على الفرع الرئيسي
+
+jobs:
+  build-and-test-image:
+    runs-on: ubuntu-latest # سيرفر مؤقت من جيت هاب
+
+    steps:
+      - name: 1. Checkout the code (سحب الكود)
+        uses: actions/checkout@v3
+
+      - name: 2. Build the Docker Image (بناء الحاوية للتأكد من سلامة الكود)
+        run: docker build -t my-app-test .
+
+      - name: 3. Run the container temporarily (تشغيل الحاوية للتجربة)
+        run: docker run -d -p 3000:3000 --name test-container my-app-test
+
+      - name: 4. Check if the app is responding (التأكد إن الموقع شغال)
+        run: sleep 5 && curl http://localhost:3000
