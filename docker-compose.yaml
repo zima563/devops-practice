@@ -7,11 +7,44 @@ services:
       - "3000:3000"
     volumes:
       - ./:/app
-      - /app/node_modules # السطر ده عشان مانمسحش مكتبات النود اللي جوه الحاوية
+      - /app/node_modules
     depends_on:
       - cache
+    networks:
+      - monitoring
 
   cache:
     image: redis:alpine
     ports:
       - "6379:6379"
+    networks:
+      - monitoring
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3001:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - monitoring
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    ports:
+      - "9100:9100"
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge
