@@ -12,8 +12,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 1. Checkout the code
-        uses: actions/checkout@v3
+      - name: 1. Clone the repository
+        run: git clone https://github.com/zima563/devops-practice.git .
 
       - name: 2. Start services using Docker Compose
         run: docker compose up -d --build
