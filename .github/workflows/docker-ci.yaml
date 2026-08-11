@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - master
-  workflow_dispatch: # السطر السحري اللي بيعمل زرار التشغيل اليدوي
+  workflow_dispatch:
 
 jobs:
   build-and-test-image:
@@ -13,13 +13,15 @@ jobs:
 
     steps:
       - name: 1. Checkout the code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: 2. Build the Docker Image
-        run: docker build -t my-app-test .
+      - name: 2. Start services using Docker Compose
+        run: docker compose up -d --build
 
-      - name: 3. Run the container temporarily
-        run: docker run -d -p 3000:3000 --name test-container my-app-test
+      - name: 3. Check if the app is responding
+        run: |
+          sleep 10
+          curl -f http://localhost:3000 || exit 1
 
-      - name: 4. Check if the app is responding
-        run: sleep 5 && curl http://localhost:3000
+      - name: 4. Clean up containers
+        run: docker compose down
