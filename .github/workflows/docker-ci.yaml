@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: 1. Checkout the code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: 2. Start services using Docker Compose
         run: docker compose up -d --build
